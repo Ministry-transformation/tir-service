@@ -1,7 +1,7 @@
 const input = document.querySelector('#engine-search');
 const engines = [...document.querySelectorAll('#engine-list span')];
 const empty = document.querySelector('#no-results');
-const normalize = value => value.toLocaleLowerCase('uk').replace(/[\s\-–—]/g, '');
+const normalize = value => value.toLocaleLowerCase('uk').replace(/[\s\-–—]/g, '').replace(/в/g, 'v').replace(/д/g, 'd');
 if (input && empty) input.addEventListener('input', () => {
   const query = normalize(input.value);
   let visible = 0;
@@ -50,6 +50,12 @@ function setupCallbackForm(form) {
     const name = form.elements.name.value.trim();
     const phone = form.elements.phone.value.trim();
     const digits = phone.replace(/\D/g, '');
+    if (!name) {
+      form.elements.name.setCustomValidity('Вкажіть ваше ім’я.');
+      form.elements.name.reportValidity();
+      return;
+    }
+    form.elements.name.setCustomValidity('');
     if (digits.length < 9 || digits.length > 15) {
       form.elements.phone.setCustomValidity('Вкажіть номер телефону з 9–15 цифр.');
       form.elements.phone.reportValidity();
@@ -61,6 +67,7 @@ function setupCallbackForm(form) {
     result.hidden = false;
     result.querySelector('[role="status"]').textContent = 'Звернення підготовлено, але ще не надіслано.';
   });
+  form.elements.name.addEventListener('input', () => form.elements.name.setCustomValidity(''));
   form.elements.phone.addEventListener('input', () => form.elements.phone.setCustomValidity(''));
   form.querySelector('[data-copy-callback]').addEventListener('click', async () => {
     const field = form.querySelector('.callback-result textarea');

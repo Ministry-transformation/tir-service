@@ -192,6 +192,9 @@ about_path.write_text(about.replace('</main>', about_details + '</main>'), encod
 # and exact-model limitations in research-input/РЕЄСТР-ФОТО-2026.md.
 for html_path in ROOT.rglob('index.html'):
     html = html_path.read_text(encoding='utf-8')
-    html = html.replace('Ілюстрація, створена ШІ: не фотографія цієї моделі або майстерні', 'Ілюстрація для ознайомлення; вигляд двигуна може відрізнятися.')
-    html = html.replace('Ілюстративне зображення, створене за допомогою ШІ', 'Ілюстрація для ознайомлення.')
+    html = re.sub(r'<figcaption>Ілюстрація, створена ШІ: не фотографія цієї моделі або майстерні</figcaption>', '', html)
+    html = re.sub(r'<figcaption>Ілюстративне зображення, створене за допомогою ШІ</figcaption>', '', html)
+    html = re.sub(r'<figcaption>Ілюстрація для ознайомлення; вигляд двигуна [^<]+ може відрізнятися\.</figcaption>', '', html)
+    html = html.replace('<figcaption>Ілюстрація для ознайомлення.</figcaption>', '')
+    html = html.replace('<p class="section-note">Ілюстрація не зображує конкретний товар.</p>', '')
     html_path.write_text(html, encoding='utf-8')
