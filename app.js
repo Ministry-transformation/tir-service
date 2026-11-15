@@ -1,4 +1,17 @@
 const input = document.querySelector('#engine-search');
+const designButtons = document.querySelectorAll('[data-design-choice]');
+function setDesign(choice) {
+  document.documentElement.dataset.design = choice;
+  designButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.designChoice === choice)));
+  try { localStorage.setItem('tirDesign', choice); } catch { /* Switching still works on this page. */ }
+  const url = new URL(location.href);
+  if (url.searchParams.has('design')) {
+    url.searchParams.set('design', choice);
+    history.replaceState(null, '', url);
+  }
+}
+designButtons.forEach(button => button.addEventListener('click', () => setDesign(button.dataset.designChoice)));
+setDesign(document.documentElement.dataset.design || '1');
 const engines = [...document.querySelectorAll('#engine-list span')];
 const empty = document.querySelector('#no-results');
 const normalize = value => value.toLocaleLowerCase('uk').replace(/[\s\-–—]/g, '').replace(/в/g, 'v').replace(/д/g, 'd');

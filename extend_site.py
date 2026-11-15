@@ -193,6 +193,12 @@ about_path.write_text(about.replace('</main>', about_details + '</main>'), encod
 # and exact-model limitations in research-input/РЕЄСТР-ФОТО-2026.md.
 for html_path in ROOT.rglob('index.html'):
     html = html_path.read_text(encoding='utf-8')
+    prefix = '../' * len(html_path.parent.relative_to(ROOT).parts)
+    if 'design-switch.css' not in html:
+        html = html.replace('</head>', f'<script src="{prefix}theme.js"></script><link rel="stylesheet" href="{prefix}design-switch.css"></head>', 1)
+    if 'class="design-switch"' not in html:
+        switch = '<div class="design-switch" role="group" aria-label="Вибір дизайну сайту"><button type="button" data-design-choice="1" aria-pressed="true">Дизайн 1</button><button type="button" data-design-choice="2" aria-pressed="false">Дизайн 2</button></div>'
+        html = html.replace('</header>', switch + '</header>', 1)
     html = re.sub(r'<figcaption>Ілюстрація, створена ШІ: не фотографія цієї моделі або майстерні</figcaption>', '', html)
     html = re.sub(r'<figcaption>Ілюстративне зображення, створене за допомогою ШІ</figcaption>', '', html)
     html = re.sub(r'<figcaption>Ілюстрація для ознайомлення; вигляд двигуна [^<]+ може відрізнятися\.</figcaption>', '', html)
