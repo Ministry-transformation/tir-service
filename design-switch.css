@@ -67,4 +67,4 @@ html[data-design="1"] .hero-bottom{width:100%;background:rgba(233,237,233,.9)}
   html[data-design="1"] .hero h1,html[data-design="2"] .hero h1{font-size:clamp(38px,10vw,52px)}
   input,textarea,select{font-size:16px}
 }
-@media(max-width:360px){.header .brand{font-size:10px;gap:6px}.design-switch button{padding-inline:7px}.header nav{font-size:11px}}
+@media(max-width:360px){.header{gap:10px}.header .brand{font-size:9px;gap:5px;letter-spacing:0}.header .brand-mark{font-size:12px;padding:9px 5px}.design-switch{gap:0}.design-switch button{font-size:10px;padding-inline:5px}.header nav{font-size:11px}}
